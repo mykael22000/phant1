@@ -75,30 +75,35 @@ This is an estimate of the alerts impact upon the services it affects.
   Resolved - Problem fixed
 
 location
-An array of JSON objects that indicate the location the alert occurred at.
+An array of textual tags that indicate the location the alert occurred at.  
+For a geographic location, use the geo_location entry.
 
-Each JSON object needs a keyword that indicates the location type, as well
-as it's data values.  
+Each tag starts with a keyword that indicates the location type, followed by a 
+/ and then it's value:  
 
 Examples might be:
-  { host: foo.bar.com }, 
-  { geo: { Lat: xxx, Long: xxx } }, 
-  { port: { host: foo.bar.com, port: 2017 }}
+  "host/foo.bar.com" 
+  "port/foo.bar.com:2017"
+  "cluster/elastic_north"
 
 Ideally you should specify as many location strings as you can.
 
+geo_location
+A geographical location for an alert, referring to the location of the entity
+the alert was being raised for.
+
 impacts
-An array of JSON objects that indicate the entities that are potentially 
+An array of textual tags that indicate the entities that are potentially 
 impacted by the alert.  
 
-Each JSON object needs a keyword that identifies the nature of the impacted 
-entity as well as it's name.
+Each tag needs a keyword that identifies the nature of the impacted 
+entity, a slash and the name of the entity.
 
 Examples might be:
 
-  { host: foo.bar.com }
-  { application: "email"}
-  { application: "online_ordering" }
+  "host/foo.bar.com"
+  "app/email"
+  "app/online_ordering"
 
 This information can be used to filter the alerts in the Phant2 viewer and
 will eventually tie into some business logic in Phant3.
@@ -108,7 +113,7 @@ This is a text string that identifies the origin of the alert.  An example
 might be 'Watcher CPU Monitor, foo.bar.com'.  It is only intended for human 
 consumption.
 
-source-link
+source_link
 This is a URL that, when followed, will open a web browser window in the tool
 that generated the alert, showing the data that caused the alert to be 
 generated.  It will likely include a query as well as the tool specification.
@@ -147,8 +152,8 @@ email.foo.bar.com.
     severity="Warning",
     text="CPU Usage for email.foo.bar.com is 93%.",
     tokens=["email.foo.bar.com","93"],
-    location=[{host:"email.foo.bar.com"}],
-    impacts=[{host:"email.foo.bar.com"}, {app: "email"}],
+    location=["host/email.foo.bar.com"],
+    impacts=["host/email.foo.bar.com"", "app:email"],
     data=[{history:[{1234567891000,75},{1234567892000,80},{1234567893000,65}, 
                     {1234567894000,79},{1234567895000,85},{1234567896000,93}]}]
 }

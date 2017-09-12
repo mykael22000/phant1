@@ -1,1 +1,2 @@
 curl -XDELETE http://localhost:9200/phant-test1
+curl -XDELETE http://localhost:9200/phant-alert1

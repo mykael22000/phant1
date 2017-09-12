@@ -14,10 +14,11 @@ PUT phant-alert1
                 "text" : { "type" : "text" },
                 "timestamp" : { "type" : "date" },
                 "class" : { "type" : "keyword" },
-                "source-link" : { "type" : "keyword" },
+                "source_link" : { "type" : "keyword" },
                 "severity" : { "type" : "keyword" },
-                "location" : { "type" : "nested" },
-                "impacts" : { "type" : "nested" },
+                "location" : { "type" : "keyword" },
+                "geo_location" : { "type" : "geo_point" },
+                "impacts" : { "type" : "keyword" },
                 "data" : { "type" : "nested" },
                 "signatures" : { "type" : "keyword" }
             }
