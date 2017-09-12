@@ -2,7 +2,7 @@
 # Paste the following into the Kibana Dev Tools Console
 #
 
-PUT phant-test1 
+PUT phant-alert1 
 {
     "settings" : {
         "number_of_shards" : 2
