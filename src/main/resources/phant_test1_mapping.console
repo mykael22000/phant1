@@ -1,0 +1,19 @@
+#
+# Paste the following into the Kibana Dev Tools Console
+#
+
+PUT phant-test1 
+{
+    "settings" : {
+        "number_of_shards" : 2
+    },
+    "mappings" : {
+        "test1" : {
+            "properties" : {
+                "user" : { "type" : "text" },
+                "message" : { "type" : "text" },
+                "postDate" : { "type" : "date" }
+            }
+        }
+    }
+}
