@@ -17,8 +17,8 @@ import jmap.JConv;
 public class Phant1 {
     
     static String cluster = "mik-phant";
-    static String index = "phant-test1";  //Must be lower case
-    static String type = "test1";
+    static String index = "phant-alert1";  //Must be lower case
+    static String type = "alpha";
     
     public static void main(String[] args) { 
         

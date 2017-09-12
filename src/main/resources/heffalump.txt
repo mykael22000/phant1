@@ -125,9 +125,13 @@ required.
 While this data can be directly accessed it is intended to be presented to the
 user in the Phant2 alert viewer when they ask for more detail about an alert.
 
-signatures
+sigs
 This is a set of textual tags that will be created on the alert from 
 information in other fields.  It's used to accelerate search and filtering.
+
+When the Phant1 tools are used to create an alert, the sigs are generated when 
+the event is created.  If an event is externally created without any sigs
+then a monitor running against the index will find it and add them.
 
 Example Alert
 An example of an alert for a scenario where a Watcher (running on 

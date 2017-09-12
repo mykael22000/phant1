@@ -1,0 +1,27 @@
+#
+# Paste the following into the Kibana Dev Tools Console
+#
+
+PUT phant-test1 
+{
+    "settings" : {
+        "number_of_shards" : 2
+    },
+    "mappings" : {
+        "alpha" : {
+            "properties" : {
+                "source" : { "type" : "text" },
+                "text" : { "type" : "text" },
+                "timestamp" : { "type" : "date" },
+                "class" : { "type" : "keyword" },
+                "source" : { "type" : "date" },
+                "source-link" : { "type" : "keyword" },
+                "severity" : { "type" : "keyword" },
+                "location" : { "type" : "nested" },
+                "impacts" : { "type" : "nested" },
+                "data" : { "type" : "nested" },
+                "signatures" : { "type" : "keyword" },
+            }
+        }
+    }
+}
