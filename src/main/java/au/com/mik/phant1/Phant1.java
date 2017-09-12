@@ -31,11 +31,11 @@ public class Phant1 {
         json.put("severity","Info");
         json.put("source-link","https://github.com/mykael22000/phant1");        
         json.put("class","mik.phant/TEST1");
-        json.put("tokens","[ \"Test\", \"Heffalump\", \"Phant1\"]");
-        json.put("location","[{ \"host\": \"Miks desktop\" }]");  
-        json.put("impacts","[{ }]");  
-        json.put("data","[{ }]");        
-        json.put("sigs","[ \"host/Miks desktop\", \"class/mik.phant/TEST\" ]");        
+        json.put("tokens","[\"Test\",\"Heffalump\",\"Phant1\"]");
+        json.put("location","[{\"host\":\"Miks desktop\"},{\"dev\":\"Master\"}]");  
+        json.put("impacts","[{}]");  
+        json.put("data","[{}]");        
+        json.put("sigs","[\"host/Miks desktop\",\"class/mik.phant/TEST\"]");        
         System.out.println(json);
         
         JConv jc = new JConv();

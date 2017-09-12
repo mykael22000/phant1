@@ -30,6 +30,8 @@ public class JConv{
         String comma = ",";
         String open = "{";
         String close = "}";
+        String open_array = "[";
+        String close_array = "]";        
         
         int lines = 0;
         
@@ -46,10 +48,15 @@ public class JConv{
                 System.out.println(key + " -> " + map.get(key));
                 value = map.get(key);
                 work = value.toString().getBytes();
-                key = quote + key + quote + colon + quote;
+                key = quote + key + quote + colon;
+                if (work[0] != '[') { 
+                    key += quote; 
+                }
                 out.write(key.getBytes());
                 out.write(work);
-                out.write(quote.getBytes());
+                if (work[0] != '[') { 
+                    out.write(quote.getBytes()); 
+                }
                 lines += 1;
             }
             
