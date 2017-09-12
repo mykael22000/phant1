@@ -1,0 +1,157 @@
+Heffalump is the format used for the alerts in the phant infrastructure
+
+Heffalump is an open format - you can generate alerts in this format using any
+tooling you want and it simply describes the fields in the JSON document that
+is created for each alert.  
+
+The Phant1 tooling is available to generate these alerts.
+
+Unlike older alerting mechanisms, Heffalump is geared to generating rich alerts
+that contain a lot of information and are thus easier to process and more 
+informative to the operators viewing them.
+
+Alert Structure
+
+Each alert is held in a single JSON document.
+
+The documents are designed to be held in elastic search, which means they end up
+in a lucene index.  For this to work efficiently, all of the alerts need to have
+similar keywords and structures.
+
+The type of the alerts identified the version of Heffalump that the alert 
+follows.  The initial version will be Alpha, which will then change to Beta and 
+finally MK1.  If there is a need to change it, it will become MKII, MKIII etc...
+
+Each alert has a class - this gives the category of the alert.  Examples might
+be HIGH_CPU_USAGE, LOW_DISK_SPACE, PROCESS_ABEND, LOGON_FAILURE.  
+
+While it might be tempting to place all the events of a given class into a 
+different index, the Phant infrastructure will be able to deliver much more
+value if they are all in the same index.  If you need to put the data into
+multiple indexes, you'd be better splitting it geographically or operationally
+by service.  The Phant2 Alert Viewer needs to query the index to display all 
+the alerts from it - multiple indexes mean multiple queries and may not be 
+supported in the first versions.
+
+Keywords
+
+timestamp 
+A standard elastic timestamp - milliseconds since the start of the epoc.
+
+type
+The format of the alert used to store it in elastics lucene index.  This ties
+to the mapping that needs to be applied to the index to ensure that the fields
+in the alert are correctly defined.
+
+class
+This is a text string that defines the category of the alert.  
+
+While, conceptually, this is as simple as names like HIGH_CPU_USAGE, the class 
+names should be prefixed with their owning organization, using the same 
+reversed domain name technique java uses. com.foo.bar/HIGH_CPU_USAGE.  This 
+will help avoid problems if you deploy third party monitors that generate 
+similar alerts.  For presentation, the organization may be suppressed.
+
+text
+A line of formatted text, typically a captured or generated message that
+describes the alert.
+
+tokens
+An array of textual tokens, possibly extracted from the text, that, when
+combined with the alerts class, could be used to reconstruct the text field.
+This is primarily for future NLS support in Phant2 - in theory one operator 
+could be viewing the alerts in English while another is viewing them in Dutch.  
+It can also be used to directly access the token strings without having to 
+parse them out of the text string.
+
+severity
+This is an estimate of the alerts impact upon the services it affects.
+
+  Fatal - It's dead Jim
+  Critical - Do something now!
+  Warning - Do something
+  Unusual - That's odd
+  Info - For operator information
+  Resolved - Problem fixed
+
+location
+An array of JSON objects that indicate the location the alert occurred at.
+
+Each JSON object needs a keyword that indicates the location type, as well
+as it's data values.  
+
+Examples might be:
+  { host: foo.bar.com }, 
+  { geo: { Lat: xxx, Long: xxx } }, 
+  { port: { host: foo.bar.com, port: 2017 }}
+
+Ideally you should specify as many location strings as you can.
+
+impacts
+An array of JSON objects that indicate the entities that are potentially 
+impacted by the alert.  
+
+Each JSON object needs a keyword that identifies the nature of the impacted 
+entity as well as it's name.
+
+Examples might be:
+
+  { host: foo.bar.com }
+  { application: "email"}
+  { application: "online_ordering" }
+
+This information can be used to filter the alerts in the Phant2 viewer and
+will eventually tie into some business logic in Phant3.
+
+source
+This is a text string that identifies the origin of the alert.  An example 
+might be 'Watcher CPU Monitor, foo.bar.com'.  It is only intended for human 
+consumption.
+
+source-link
+This is a URL that, when followed, will open a web browser window in the tool
+that generated the alert, showing the data that caused the alert to be 
+generated.  It will likely include a query as well as the tool specification.
+
+For example, if Watcher was generating an alert to indicate CPU usage was 
+high, this link might be set to open up a kibana window showing the CPU usage 
+for the system the alert is being raised for.
+
+data
+This is an array of JSON data objects that contain data associated with the 
+alert.  The class of the alert determines which data fields are valid and/or 
+required.
+
+While this data can be directly accessed it is intended to be presented to the
+user in the Phant2 alert viewer when they ask for more detail about an alert.
+
+signatures
+This is a set of textual tags that will be created on the alert from 
+information in other fields.  It's used to accelerate search and filtering.
+
+Example Alert
+An example of an alert for a scenario where a Watcher (running on 
+elk.foo.bar.com) is generating a high CPU usage alert for system 
+email.foo.bar.com.
+
+{
+    type: Alpha,
+    timestamp: 1234567896000,
+    class: "com.bar.foo/HIGH_CPU",
+    source: "CPU Watcher on elk.foo.bar.com",
+    source-link: "https://elk.foo.bar.com:5200/query_cpu?host=email.foo.bar.com",
+    severity="Warning",
+    text="CPU Usage for email.foo.bar.com is 93%.",
+    tokens=["email.foo.bar.com","93"],
+    location=[{host:"email.foo.bar.com"}],
+    impacts=[{host:"email.foo.bar.com"}, {app: "email"}],
+    data=[{history:[{1234567891000,75},{1234567892000,80},{1234567893000,65}, 
+                    {1234567894000,79},{1234567895000,85},{1234567896000,93}]}]
+}
+
+The generated signatures would be:
+
+    signatures=["host/email.foo.bar.com", "app/email", "class/com.bar.foo/HIGH_CPU"]
+
+
+
