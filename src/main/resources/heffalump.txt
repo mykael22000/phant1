@@ -74,39 +74,34 @@ This is an estimate of the alerts impact upon the services it affects.
   Info - For operator information
   Resolved - Problem fixed
 
-location
-An array of textual tags that indicate the location the alert occurred at.  
+tags
+An array of textual tags that indicate the 'logical location' the alert 
+occurred at.  
+
 For a geographic location, use the geo_location entry.
 
-Each tag starts with a keyword that indicates the location type, followed by a 
+Each tag starts with a keyword that indicates the tag type, followed by a 
 / and then it's value:  
 
 Examples might be:
-  "host/foo.bar.com" 
-  "port/foo.bar.com:2017"
+  "host/email.foo.bar.com" 
+  "port/email.foo.bar.com/2525"
+  "port/2525"
   "cluster/elastic_north"
+  "mount/email.foo.bar.com/spool"
+  "mount/spool"
+  "process/email.foo.bar.com/u/home/foobar/foo -xyzzy"
+  "process/foo -xyzzy"
 
-Ideally you should specify as many location strings as you can.
+Ideally you should specify as many tags as you can. This information can be 
+used to filter the alerts in the Phant2 viewer.
+
+It is important that tags are generated using the same templates by different 
+alert generators as this will enable Phant3 to correlate them.
 
 geo_location
 A geographical location for an alert, referring to the location of the entity
 the alert was being raised for.
-
-impacts
-An array of textual tags that indicate the entities that are potentially 
-impacted by the alert.  
-
-Each tag needs a keyword that identifies the nature of the impacted 
-entity, a slash and the name of the entity.
-
-Examples might be:
-
-  "host/foo.bar.com"
-  "app/email"
-  "app/online_ordering"
-
-This information can be used to filter the alerts in the Phant2 viewer and
-will eventually tie into some business logic in Phant3.
 
 source
 This is a text string that identifies the origin of the alert.  An example 
@@ -130,14 +125,6 @@ required.
 While this data can be directly accessed it is intended to be presented to the
 user in the Phant2 alert viewer when they ask for more detail about an alert.
 
-sigs
-This is a set of textual tags that will be created on the alert from 
-information in other fields.  It's used to accelerate search and filtering.
-
-When the Phant1 tools are used to create an alert, the sigs are generated when 
-the event is created.  If an event is externally created without any sigs
-then a monitor running against the index will find it and add them.
-
 Example Alert
 An example of an alert for a scenario where a Watcher (running on 
 elk.foo.bar.com) is generating a high CPU usage alert for system 
@@ -152,8 +139,7 @@ email.foo.bar.com.
     severity="Warning",
     text="CPU Usage for email.foo.bar.com is 93%.",
     tokens=["email.foo.bar.com","93"],
-    location=["host/email.foo.bar.com"],
-    impacts=["host/email.foo.bar.com"", "app:email"],
+    tags=["host/email.foo.bar.com"],
     data=[{history:[{1234567891000,75},{1234567892000,80},{1234567893000,65}, 
                     {1234567894000,79},{1234567895000,85},{1234567896000,93}]}]
 }
