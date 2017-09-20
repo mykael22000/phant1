@@ -27,13 +27,13 @@ public class Phant1 {
         Map<String, Object> json = new HashMap<>();
         json.put("source","Phant1 Alpha Testing");
         json.put("timestamp",new Date().getTime());
-        json.put("text","Test Haffalump alert for Phant1");
-        json.put("severity","Info");
+        json.put("text","Test Heffalump alert for Phant1");
+        json.put("severity","Critical");
         json.put("source_link","https://github.com/mykael22000/phant1");        
         json.put("class","mik.phant/TEST1");
         json.put("impacts","[\"host/Miks_desktop\",\"dev/Master\"]");  
         json.put("data","[{}]");        
-        json.put("sigs","[\"host/Miks_desktop\",\"dev/Master\"]");        
+        json.put("tokens","[\"Miks_desktop\",\"93%\"]");        
         System.out.println(json);
         
         JConv jc = new JConv();
