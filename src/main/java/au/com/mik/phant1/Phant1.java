@@ -24,11 +24,13 @@ public class Phant1 {
         
         // Get some JSON data to send
         
+        String[] sevs = new String[] {"Info","Warning","Critical","Fatal"};
+        
         Map<String, Object> json = new HashMap<>();
         json.put("source","Phant1 Alpha Testing");
         json.put("timestamp",new Date().getTime());
         json.put("text","Test Heffalump alert for Phant1");
-        json.put("severity","Critical");
+        json.put("severity",oneof(sevs));
         json.put("source_link","https://github.com/mykael22000/phant1");        
         json.put("class","mik.phant/TEST1");
         json.put("impacts","[\"host/Miks_desktop\",\"dev/Master\"]");  
@@ -51,6 +53,12 @@ public class Phant1 {
         
         return;
     }
-          
+       
+    static String oneof(String[] opts) {
+     
+        Double ix = Math.floor(Math.random() * opts.length);
+             
+        return opts[ix.intValue()];
+    }
 
 }
