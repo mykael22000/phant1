@@ -32,6 +32,7 @@ public class Phant1 {
         Map<String, Object> json = new HashMap<>();
         json.put("source","Phant1 Alpha Testing");
         json.put("timestamp",time);
+        json.put("last_updated",time);        
         json.put("text",text);
         json.put("severity",oneof(sevs));
         json.put("source_link","https://github.com/mykael22000/phant1");        
