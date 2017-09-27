@@ -26,16 +26,25 @@ public class Phant1 {
         
         String[] sevs = new String[] {"Info","Warning","Critical","Fatal"};
         
+        String time = "" + new Date().getTime();
+        String text = "Test Heffalump alert for Phant1";
+        
         Map<String, Object> json = new HashMap<>();
         json.put("source","Phant1 Alpha Testing");
-        json.put("timestamp",new Date().getTime());
-        json.put("text","Test Heffalump alert for Phant1");
+        json.put("timestamp",time);
+        json.put("text",text);
         json.put("severity",oneof(sevs));
         json.put("source_link","https://github.com/mykael22000/phant1");        
         json.put("class","mik.phant/TEST1");
         json.put("impacts","[\"host/Miks_desktop\",\"dev/Master\"]");  
         json.put("data","[{}]");        
         json.put("tokens","[\"Miks_desktop\",\"93%\"]");        
+        json.put("process_status","new");
+        json.put("history","[{\"timestamp\":\"" + time + "\","
+                               + "\"agent\":\"phant1\"," 
+                               + "\"event\":\"created\","
+                               + "\"text\":\"" + text + "\" }]");       
+        
         System.out.println(json);
         
         JConv jc = new JConv();
